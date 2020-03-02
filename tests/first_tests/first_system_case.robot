@@ -1,20 +1,23 @@
 *** Settings ***
-Documentation    Example using the reStructuredText format.
-Library          OperatingSystem
+Library       SeleniumLibrary
+Test Setup      Test Setup
+Test Teardown   Close Browser
+Force Tags      FunctionalTest
+Default Tags    ValidTest
 
 *** Variables ***
-${MESSAGE}       Hello, world!
+${BROWSER}       gc
 
 *** Test Cases ***
-My Test
-       [Documentation]    Example test
-       Log    ${MESSAGE}
-       My Keyword    /tmp
-
-Another Test
-    Should Be Equal    ${MESSAGE}    Hello, world!
+Login Should Succeed When the Correct Username and Password are Entered
+    [Tags]               InvalidTest
+    Input Text           uname          BUser
+    Input Text           pwd            TestPass
+    Click Button         login
+    Page Should Contain  Welcome
 
 *** Keywords ***
-My Keyword
-    [Arguments]             ${path}
-    directory should exist  ${path}
+Test Setup
+    Open Browser  http://zdiles.chaosnet.org/  ${BROWSER}
+    Maximize Browser Window
+    Set Browser Implicit Wait   10
